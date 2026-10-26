@@ -1,0 +1,11 @@
+<div class="rows">
+  {% for s in services %}
+  <article class="row">
+    <span class="row-ico">{% include "includes/icon.html" with name=s.icon %}</span>
+    <div>
+      <h3>{{ s.name }}</h3>
+      <p>{% if long %}{{ s.long }}{% else %}{{ s.short }}{% endif %}</p>
+    </div>
+  </article>
+  {% endfor %}
+</div>

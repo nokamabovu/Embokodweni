@@ -1,0 +1,16 @@
+<section class="section {{ why_bg }}">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Why Embokodweni</h2>
+      <p>A venue built for the community, run with care.</p>
+    </div>
+    <div class="why">
+      {% for w in why %}
+      <div class="why-item {{ w.colour }}">
+        <h3>{{ w.title }}</h3>
+        <p>{{ w.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

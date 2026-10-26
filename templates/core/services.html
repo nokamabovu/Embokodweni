@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Services | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="Our services" intro="From live DJs and the big match to private celebrations with braai and VIP service." %}
+
+<section class="section">
+  <div class="wrap">
+    {% include "includes/service_cards.html" with long=True %}
+  </div>
+</section>
+
+{% include "includes/cta.html" %}
+{% endblock %}

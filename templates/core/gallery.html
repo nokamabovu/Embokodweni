@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="Gallery" intro="Photos from events at Embokodweni Lifestyle." %}
+
+<section class="section">
+  <div class="wrap">
+    <div class="sheet">
+      {% for p in photos %}
+      <a href="{{ p.url }}" target="_blank" rel="noopener" class="{% if forloop.first %}wide{% endif %}">
+        <img src="{{ p.url }}" alt="{{ p.caption|default:'Embokodweni Lifestyle event' }}" loading="lazy">
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% include "includes/cta.html" %}
+{% endblock %}

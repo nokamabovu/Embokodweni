@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}About us | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="About us" intro="An entertainment and lifestyle venue in Cunningmoore A, Mkhuhlu, Mpumalanga." %}
+
+<section class="section">
+  <div class="wrap about">
+    <div class="copy">
+      <p class="big">Embokodweni Lifestyle is dedicated to bringing people together through music, sports, food and memorable social experiences.</p>
+      <p class="soft">We provide a welcoming environment where community members can relax, celebrate, connect and enjoy quality entertainment.</p>
+      <p class="soft">Our events cater to diverse audiences and include live DJ performances, themed celebrations, sports screenings on big screens, weekend entertainment, special promotions and community gatherings. Through our commitment to excellent service and continuous improvement, we strive to create unforgettable experiences for our patrons.</p>
+      <div class="vision">
+        <span class="label">Our vision</span>
+        <p>To become the leading lifestyle and entertainment destination in our community, known for exceptional hospitality, exciting events and positive community impact.</p>
+      </div>
+      <dl class="biz">
+        {% if site.owner_name %}<div><dt>Owner</dt><dd>{{ site.owner_name }}</dd></div>{% endif %}
+        <div><dt>Address</dt><dd>{{ site.address }}</dd></div>
+        {% if site.liquor_licence_no %}<div><dt>Liquor licence</dt><dd>No. {{ site.liquor_licence_no }}, Mpumalanga Economic Regulator</dd></div>{% endif %}
+      </dl>
+    </div>
+    <figure class="single"><img src="{{ about_photo }}" alt="Guests at an Embokodweni event" loading="lazy"></figure>
+  </div>
+</section>
+
+<section class="section grey">
+  <div class="wrap cols">
+    <div>
+      <h2>Our mission</h2>
+      <ol class="mission">
+        {% for item in mission %}<li>{{ item }}</li>{% endfor %}
+      </ol>
+    </div>
+    <div>
+      <h2>Core values</h2>
+      <div class="values">
+        {% for v in values %}<span>{{ v }}</span>{% endfor %}
+      </div>
+      <div class="motto">Where Lifestyle Meets <span>Entertainment.</span></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

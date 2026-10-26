@@ -1,0 +1,61 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ b.reference }}{% endblock %}
+{% block heading %}<a class="back" href="{% url 'dash_inbox' %}">Inbox</a> / {{ b.reference }}{% endblock %}
+{% block content %}
+<div class="detail">
+  <section class="panel">
+    <div class="detail-head">
+      <div>
+        <span class="tag {% if b.is_question %}t-question{% else %}t-booking{% endif %}">{% if b.is_question %}Busy-date question{% else %}Booking{% endif %}</span>
+        <h2>{{ b.name }}</h2>
+        <p class="muted">Received {{ b.created|date:"D j M Y, H:i" }}</p>
+      </div>
+      <span class="status big s-{{ b.status }}">{{ b.get_status_display }}</span>
+    </div>
+
+    {% if b.is_question %}<div class="alert warning">The customer saw this date as booked and is asking if another area is free.</div>{% endif %}
+
+    <dl class="facts">
+      <div><dt>Event</dt><dd>{{ b.get_event_type_display }}</dd></div>
+      <div><dt>Date</dt><dd>{{ b.event_date|date:"l j F Y" }}</dd></div>
+      <div><dt>Guests</dt><dd>{{ b.guests|default:"-" }}</dd></div>
+      <div><dt>Phone</dt><dd><a href="tel:{{ dial }}">{{ b.phone }}</a></dd></div>
+      <div><dt>Email</dt><dd>{% if b.email %}<a href="mailto:{{ b.email }}">{{ b.email }}</a>{% else %}-{% endif %}</dd></div>
+      <div><dt>Message</dt><dd>{{ b.clean_message|default:"-"|linebreaksbr }}</dd></div>
+    </dl>
+
+    <div class="actions">
+      <a class="btn ghost" href="tel:{{ dial }}">Call</a>
+      {% if wa %}<a class="btn ghost" href="{{ wa }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+      {% if b.email %}<a class="btn ghost" href="mailto:{{ b.email }}?subject=Your%20booking%20{{ b.reference }}">Email</a>{% endif %}
+    </div>
+  </section>
+
+  <aside class="panel">
+    <h3>Decision</h3>
+    <form method="post" class="decide">
+      {% csrf_token %}
+      {% if b.status != "confirmed" %}<button class="btn ok" name="action" value="confirm">Confirm booking</button>{% endif %}
+      {% if b.status != "declined" %}<button class="btn bad" name="action" value="decline">Decline</button>{% endif %}
+      {% if b.status != "pending" %}<button class="btn ghost" name="action" value="pending">Move back to pending</button>{% endif %}
+    </form>
+    <p class="muted small">Confirming blocks the date on the website{% if b.email %} and emails the customer{% endif %}. Limit: {{ limit }} confirmed booking{{ limit|pluralize }} per day.</p>
+
+    <h3>Same day</h3>
+    {% if blocked %}<p class="alert warning">This date is blocked{% if blocked.reason %}: {{ blocked.reason }}{% endif %}.</p>{% endif %}
+    {% for o in same_day %}
+    <a class="line" href="{% url 'dash_booking' o.pk %}"><span class="line-main"><b>{{ o.name }}</b><small>{{ o.get_event_type_display }} · {{ o.guests }} guests</small></span><span class="status s-{{ o.status }}">{{ o.get_status_display }}</span></a>
+    {% empty %}
+    <p class="muted">No other bookings on this date.</p>
+    {% endfor %}
+
+    <h3>Staff notes</h3>
+    <form method="post" class="note">
+      {% csrf_token %}
+      <textarea name="staff_note" rows="4" placeholder="e.g. Called 10:30, wants braai package, deposit next week">{{ b.staff_note }}</textarea>
+      <button class="btn" name="action" value="note">Save note</button>
+    </form>
+    <form method="post">{% csrf_token %}<button class="link-btn" name="action" value="unread">Mark as unread</button></form>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="stage">
+  <div class="frame">
+    <div class="frame-bg" style="background-image:url('{{ hero }}')" role="img" aria-label="Guests celebrating at sunset at Embokodweni Lifestyle"></div>
+    <div class="arcs" aria-hidden="true"><i></i><i></i></div>
+
+    {% include "includes/frame_nav.html" %}
+
+    <div class="frame-body">
+      <p class="kicker">{{ site.area }}</p>
+      <h1>Where lifestyle meets entertainment.</h1>
+      <p class="sub">Live DJs, sports on big screens, food and braai, and a place to celebrate with the people who matter.</p>
+
+      <form class="glass-bar" id="avail-bar" action="{% url 'book' %}" method="get" aria-label="Check availability" data-availability-url="{% url 'availability' %}">
+        <label class="gb-field gb-type">
+          {% include "includes/icon.html" with name="calendar" %}
+          <span class="sr">Type of event</span>
+          <select name="type" id="hero-type">
+            {% for value, label in event_types %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+          </select>
+        </label>
+        <label class="gb-field">
+          {% include "includes/icon.html" with name="star" %}
+          <span class="sr">Date</span>
+          <input type="date" name="date" id="hero-date" min="{% now 'Y-m-d' %}" required>
+        </label>
+        <label class="gb-field">
+          {% include "includes/icon.html" with name="people" %}
+          <span class="sr">Guests</span>
+          <input type="number" name="guests" id="hero-guests" min="1" placeholder="Guests">
+        </label>
+        <button type="submit">Check availability</button>
+      </form>
+      <div class="avail-result" id="avail-result" aria-live="polite" hidden></div>
+
+      <div class="cats-wrap">
+        <h2 class="cats-title">Top experiences</h2>
+        <nav class="cats" aria-label="Experiences">
+          <a class="active" href="{% url 'events' %}">{% include "includes/icon.html" with name="disc" %}<span>Live DJs</span></a>
+          <a href="{% url 'events' %}">{% include "includes/icon.html" with name="screen" %}<span>Sports</span></a>
+          <a href="{% url 'services' %}">{% include "includes/icon.html" with name="braai" %}<span>Braai</span></a>
+          <a href="{% url 'book' %}?type=vip">{% include "includes/icon.html" with name="star" %}<span>VIP</span></a>
+          <a href="{% url 'book' %}?type=birthday">{% include "includes/icon.html" with name="cake" %}<span>Celebrations</span></a>
+          <a href="{% url 'services' %}">{% include "includes/icon.html" with name="people" %}<span>Community</span></a>
+          <a href="{% url 'services' %}">{% include "includes/icon.html" with name="glass" %}<span>Drinks</span></a>
+          <a href="{% url 'work' %}">{% include "includes/icon.html" with name="calendar" %}<span>Partner</span></a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="wordmark" aria-hidden="true">
+      <span class="wm">EMBOKODWENI</span>
+      <span class="wm reflect">EMBOKODWENI</span>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-label="What we offer">
+  <div class="ticker-track">
+    {% for i in "12" %}
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Live DJs</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Sports on big screens</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Food &amp; braai</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>VIP experiences</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Private celebrations</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Community events</span>
+    <span {% if forloop.last %}aria-hidden="true"{% endif %}>Cold drinks</span>
+    {% endfor %}
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Explore Embokodweni</h2>
+      <p>Everything you need to know, one page at a time.</p>
+    </div>
+    <div class="explore">
+      <a class="ex-card" href="{% url 'about' %}">
+        <span class="svc-ico">{% include "includes/icon.html" with name="people" %}</span>
+        <h3>About us</h3><p>Who we are, our vision, mission and values.</p><span class="ex-go">Read more</span>
+      </a>
+      <a class="ex-card" href="{% url 'services' %}">
+        <span class="svc-ico">{% include "includes/icon.html" with name="star" %}</span>
+        <h3>Services</h3><p>DJs, sports viewing, braai, VIP, private celebrations and more.</p><span class="ex-go">See services</span>
+      </a>
+      <a class="ex-card" href="{% url 'events' %}">
+        <span class="svc-ico">{% include "includes/icon.html" with name="calendar" %}</span>
+        <h3>What's on</h3><p>The weekly line-up and upcoming special events.</p><span class="ex-go">View line-up</span>
+      </a>
+      <a class="ex-card" href="{% url 'gallery' %}">
+        <span class="svc-ico">{% include "includes/icon.html" with name="screen" %}</span>
+        <h3>Gallery</h3><p>Photos from events at Embokodweni.</p><span class="ex-go">View photos</span>
+      </a>
+      <a class="ex-card" href="{% url 'work' %}">
+        <span class="svc-ico">{% include "includes/icon.html" with name="disc" %}</span>
+        <h3>Work with us</h3><p>Sponsors, DJs, event organisers and suppliers.</p><span class="ex-go">Partner with us</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% include "includes/why.html" with why_bg="grey" %}
+
+{% if upcoming %}
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Coming up</h2>
+      <a class="link" href="{% url 'events' %}">Full line-up</a>
+    </div>
+    {% include "includes/upcoming.html" with events=upcoming %}
+  </div>
+</section>
+{% endif %}
+
+{% include "includes/testimonials.html" %}
+
+{% endblock %}

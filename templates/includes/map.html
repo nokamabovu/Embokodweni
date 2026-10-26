@@ -1,0 +1,35 @@
+<section class="section find" id="find-us">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Find us</h2>
+      <a class="link" href="{{ site.directions_url }}" target="_blank" rel="noopener">Open in Google Maps</a>
+    </div>
+    <div class="find-grid">
+      <div class="map-frame">
+        <iframe src="{{ site.map_embed_url }}" title="Map showing Embokodweni Lifestyle in {{ site.address }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <div class="find-info">
+        <div>
+          <span class="label">Address</span>
+          <p class="addr">Embokodweni Lifestyle<br>{{ site.address }}</p>
+        </div>
+        {% if site.hours_list %}
+        <div>
+          <span class="label">Hours</span>
+          <p>{% for line in site.hours_list %}{{ line }}<br>{% endfor %}</p>
+        </div>
+        {% endif %}
+        {% if site.phones %}
+        <div>
+          <span class="label">Phone</span>
+          <p>{% for display, dial in site.phones %}<a href="tel:{{ dial }}">{{ display }}</a>{% if not forloop.last %}<br>{% endif %}{% endfor %}</p>
+        </div>
+        {% endif %}
+        <div class="find-actions">
+          <a class="btn" href="{{ site.directions_url }}" target="_blank" rel="noopener">Get directions</a>
+          <a class="btn outline" href="{{ site.share_location_url }}" target="_blank" rel="noopener">Send location on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

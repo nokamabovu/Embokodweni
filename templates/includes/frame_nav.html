@@ -1,0 +1,32 @@
+{% load static %}
+<header class="frame-nav">
+  <a class="frame-brand" href="{% url 'home' %}" aria-label="Embokodweni Lifestyle home">
+    <span class="chip"><img src="{% static 'img/logo-mark.png' %}" alt=""></span>
+    <span class="name"><b>Embo</b>kodweni<small>Lifestyle</small></span>
+  </a>
+  <nav class="frame-links" aria-label="Main">
+    <a href="{% url 'about' %}" {% if page == 'about' %}class="active"{% endif %}>About</a>
+    <a href="{% url 'services' %}" {% if page == 'services' %}class="active"{% endif %}>Services</a>
+    <a href="{% url 'events' %}" {% if page == 'events' %}class="active"{% endif %}>What's on</a>
+    <a href="{% url 'gallery' %}" {% if page == 'gallery' %}class="active"{% endif %}>Gallery</a>
+    <a href="{% url 'work' %}" {% if page == 'work' %}class="active"{% endif %}>Work with us</a>
+    <a href="{% url 'contact' %}" {% if page == 'contact' %}class="active"{% endif %}>Contact</a>
+  </nav>
+  <div class="frame-right">
+    {% include "includes/social_icons.html" %}
+    <a class="pill" href="{% url 'book' %}">Book now</a>
+  </div>
+  <details class="menu frame-menu">
+    <summary>Menu</summary>
+    <nav aria-label="Mobile">
+      <a href="{% url 'home' %}" {% if page == 'home' %}class="active"{% endif %}>Home</a>
+      <a href="{% url 'about' %}" {% if page == 'about' %}class="active"{% endif %}>About</a>
+      <a href="{% url 'services' %}" {% if page == 'services' %}class="active"{% endif %}>Services</a>
+      <a href="{% url 'events' %}" {% if page == 'events' %}class="active"{% endif %}>What's on</a>
+      <a href="{% url 'gallery' %}" {% if page == 'gallery' %}class="active"{% endif %}>Gallery</a>
+      <a href="{% url 'work' %}" {% if page == 'work' %}class="active"{% endif %}>Work with us</a>
+      <a href="{% url 'contact' %}" {% if page == 'contact' %}class="active"{% endif %}>Contact</a>
+      <a href="{% url 'book' %}" {% if page == 'book' %}class="active"{% endif %}>Book an event</a>
+    </nav>
+  </details>
+</header>

@@ -1,0 +1,10 @@
+<div class="tracks">
+  {% for t in tracks %}
+  <article class="track {{ t.colour }}">
+    <span class="svc-ico">{% include "includes/icon.html" with name=t.icon %}</span>
+    <h3>{{ t.title }}</h3>
+    <p>{{ t.text }}</p>
+    <a class="track-link" href="{% url 'work' %}#contact-options">Get in touch</a>
+  </article>
+  {% endfor %}
+</div>

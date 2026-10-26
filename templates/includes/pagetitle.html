@@ -1,0 +1,7 @@
+<section class="pagetitle{% if banner %} has-photo{% endif %}"{% if banner %} style="background-image:url('{{ banner }}')"{% endif %}>
+  {% include "includes/frame_nav.html" %}
+  <div class="wrap">
+    <h1>{{ heading }}</h1>
+    {% if intro %}<p>{{ intro }}</p>{% endif %}
+  </div>
+</section>

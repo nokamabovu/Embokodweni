@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Contact | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="Contact us" intro="Call, visit or book online. We're open for events, celebrations and entertainment." %}
+
+<section class="section">
+  <div class="wrap book">
+    <div>
+    <dl class="contact-list">
+      <div><dt>Call</dt><dd>{% for display, dial in site.phones %}<a href="tel:{{ dial }}">{{ display }}</a>{% if not forloop.last %}<span class="or"> or </span>{% endif %}{% empty %}Coming soon{% endfor %}</dd></div>
+      {% if site.whatsapp %}<div><dt>WhatsApp</dt><dd><a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener">Chat with us</a></dd></div>{% endif %}
+      {% if site.email %}<div><dt>Email</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>{% endif %}
+      <div><dt>Address</dt><dd>{{ site.address }}</dd></div>
+      {% if site.hours_list %}<div><dt>Hours</dt><dd class="hours">{% for line in site.hours_list %}{{ line }}{% if not forloop.last %}<br>{% endif %}{% endfor %}</dd></div>{% endif %}
+      <div><dt>Bookings</dt><dd><a href="{% url 'book' %}">Book an event online</a></dd></div>
+    </dl>
+    </div>
+
+    <div id="message">
+      {% for message in messages %}<div class="flash" role="status">{{ message }}</div>{% endfor %}
+      <form class="enquiry" method="post" action="{% url 'contact' %}#message" novalidate>
+        {% csrf_token %}
+        <h3>Send us a message</h3>
+        {% for field in form %}
+        <div class="field{% if field.name == 'message' or field.name == 'email' %} full{% endif %}{% if field.errors %} has-error{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% for error in field.errors %}<span class="err">{{ error }}</span>{% endfor %}
+        </div>
+        {% endfor %}
+        <button class="btn" type="submit">Send message</button>
+        <p class="small">We only use your details to reply to you.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% include "includes/map.html" %}
+{% endblock %}

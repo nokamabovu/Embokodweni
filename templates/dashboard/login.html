@@ -1,0 +1,66 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Staff login | Embokodweni</title>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link rel="manifest" href="{% url 'dash_manifest' %}">
+  <meta name="theme-color" content="#0B1F3A">
+  <link rel="apple-touch-icon" href="{% static 'img/staff-icon-192.png' %}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Embo Staff">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=3">
+</head>
+<body class="login-page">
+  <form class="login-card" method="post">
+    {% csrf_token %}
+    <span class="chip big"><img src="{% static 'img/logo-mark.png' %}" alt=""></span>
+    <h1>Staff dashboard</h1>
+    <p>Embokodweni Lifestyle bookings, messages and notifications.</p>
+    {% if locked %}
+    <div class="alert error">Too many wrong passwords. For security, logging in from this device is paused for 15 minutes.</div>
+    {% elif form.errors %}
+    <div class="alert error">{% if form.non_field_errors %}{% for e in form.non_field_errors %}{% if "staff" in e %}{{ e }}{% else %}That username and password don't match a staff account.{% endif %}{% endfor %}{% else %}That username and password don't match a staff account.{% endif %}{% if tries_left %} {{ tries_left }} attempt{{ tries_left|pluralize }} left.{% endif %}</div>
+    {% endif %}
+    <label for="id_username">Username</label>
+    <input type="text" name="username" id="id_username" autocomplete="username" required autofocus value="{{ form.username.value|default:'' }}">
+    <label for="id_password">Password</label>
+    <input type="password" name="password" id="id_password" autocomplete="current-password" required>
+    <label class="remember"><input type="checkbox" name="remember" value="1"> Keep me logged in on this device for 30 days</label>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit"{% if locked %} disabled{% endif %}>Log in</button>
+    <div class="install" id="install" hidden>
+      <b>Use the dashboard like an app</b>
+      <span id="install-text">Add it to this phone's home screen for one-tap access.</span>
+      <button type="button" id="install-btn">Install on this phone</button>
+    </div>
+    <a href="{% url 'home' %}">Back to the website</a>
+  </form>
+<script>
+// Offer "Install on this phone" (Android/Chrome) or show how on iPhone.
+(function () {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("{% url 'dash_sw' %}", { scope: "{% url 'dash_overview' %}" }).catch(function () {});
+  }
+  var box = document.getElementById("install"), btn = document.getElementById("install-btn"), text = document.getElementById("install-text");
+  var standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+  if (standalone) return;
+  var prompt = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); prompt = e; box.hidden = false;
+  });
+  btn.addEventListener("click", function () {
+    if (prompt) { prompt.prompt(); prompt = null; box.hidden = true; }
+  });
+  var iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (iOS) {
+    box.hidden = false; btn.hidden = true;
+    text.textContent = "On iPhone: tap the Share button, then “Add to Home Screen”.";
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Blocked dates{% endblock %}
+{% block heading %}Blocked dates{% endblock %}
+{% block content %}
+<p class="muted">Blocked dates show as booked on the website. Customers can still ask if there's space.</p>
+<div class="grid2">
+  <section class="panel">
+    <h2>Block a date</h2>
+    <form method="post" class="block-form">
+      {% csrf_token %}
+      <label for="b-date">Date</label>
+      <input type="date" id="b-date" name="date" min="{{ today|date:'Y-m-d' }}" required>
+      <label for="b-reason">Reason (only staff see this)</label>
+      <input type="text" id="b-reason" name="reason" placeholder="e.g. Private function, closed for maintenance">
+      <button class="btn" type="submit">Block date</button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>Upcoming blocked dates</h2>
+    {% for d in blocked %}
+    <div class="line">
+      <span class="date-chip"><b>{{ d.date|date:"j" }}</b>{{ d.date|date:"M" }}</span>
+      <span class="line-main"><b>{{ d.date|date:"l j F Y" }}</b><small>{{ d.reason|default:"No reason given" }}</small></span>
+      <form method="post">{% csrf_token %}<input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="{{ d.pk }}"><button class="link-btn" type="submit">Unblock</button></form>
+    </div>
+    {% empty %}
+    <p class="empty">No dates blocked.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Overview{% endblock %}
+{% block heading %}Overview{% endblock %}
+{% block content %}
+<p class="hello">Hello {{ request.user.first_name|default:request.user.get_username }}. Here's what's happening at Embokodweni today, {{ today|date:"l j F" }}.</p>
+
+<div class="stats">
+  {% for s in stats %}
+  <a class="stat" href="{{ s.url }}">
+    <span class="stat-label">{{ s.label }}</span>
+    <b>{{ s.value }}</b>
+    <small>{{ s.hint }}</small>
+  </a>
+  {% endfor %}
+</div>
+
+<div class="grid2">
+  <section class="panel">
+    <div class="panel-head"><h2>Needs attention</h2><a href="{% url 'dash_inbox' %}?f=pending">All pending</a></div>
+    {% for b in attention %}
+    <a class="line {% if not b.is_read %}unread{% endif %}" href="{% url 'dash_booking' b.pk %}">
+      <span class="date-chip"><b>{{ b.event_date|date:"j" }}</b>{{ b.event_date|date:"M" }}</span>
+      <span class="line-main"><b>{{ b.name }}</b> <span class="tag {% if b.is_question %}t-question{% else %}t-booking{% endif %}">{% if b.is_question %}Question{% else %}Booking{% endif %}</span><small>{{ b.get_event_type_display }} · {{ b.guests }} guests · {{ b.reference }}</small></span>
+      <span class="go">Open</span>
+    </a>
+    {% empty %}
+    <p class="empty">Nothing pending. Nice work.</p>
+    {% endfor %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Next 14 days</h2></div>
+    {% for b in upcoming %}
+    <a class="line" href="{% url 'dash_booking' b.pk %}">
+      <span class="date-chip"><b>{{ b.event_date|date:"j" }}</b>{{ b.event_date|date:"D" }}</span>
+      <span class="line-main"><b>{{ b.name }}</b><small>{{ b.get_event_type_display }} · {{ b.guests }} guests</small></span>
+      <span class="status s-{{ b.status }}">{{ b.get_status_display }}</span>
+    </a>
+    {% empty %}
+    <p class="empty">No bookings in the next two weeks yet.</p>
+    {% endfor %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Latest messages</h2><a href="{% url 'dash_inbox' %}?f=messages">All messages</a></div>
+    {% for m in latest_messages %}
+    <a class="line {% if not m.is_read %}unread{% endif %}" href="{% url 'dash_message' m.pk %}">
+      <span class="avatar">{{ m.name|first|upper }}</span>
+      <span class="line-main"><b>{{ m.name }}</b><small>{{ m.message|truncatechars:70 }}</small></span>
+      <span class="when">{{ m.created|timesince }} ago</span>
+    </a>
+    {% empty %}
+    <p class="empty">No messages yet. They arrive from the Contact page.</p>
+    {% endfor %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Recent activity</h2><a href="{% url 'dash_notifications' %}">All notifications</a></div>
+    {% for n in notifications %}
+    <a class="line {% if not n.is_read %}unread{% endif %}" href="{% url 'dash_notification_open' n.pk %}">
+      <span class="dot k-{{ n.kind }}"></span>
+      <span class="line-main"><b>{{ n.title }}</b><small>{{ n.body }}</small></span>
+      <span class="when">{{ n.created|timesince }} ago</span>
+    </a>
+    {% empty %}
+    <p class="empty">No activity yet.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

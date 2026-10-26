@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Message from {{ m.name }}{% endblock %}
+{% block heading %}<a class="back" href="{% url 'dash_inbox' %}">Inbox</a> / Message{% endblock %}
+{% block content %}
+<div class="detail">
+  <section class="panel">
+    <div class="detail-head">
+      <div>
+        <span class="tag t-message">Message</span>
+        <h2>{{ m.name }}</h2>
+        <p class="muted">Received {{ m.created|date:"D j M Y, H:i" }}</p>
+      </div>
+      <span class="status big s-{% if m.handled %}done{% else %}open{% endif %}">{% if m.handled %}Handled{% else %}Open{% endif %}</span>
+    </div>
+    <blockquote class="msg">{{ m.message|linebreaksbr }}</blockquote>
+    <dl class="facts">
+      <div><dt>Phone</dt><dd><a href="tel:{{ dial }}">{{ m.phone }}</a></dd></div>
+      <div><dt>Email</dt><dd>{% if m.email %}<a href="mailto:{{ m.email }}">{{ m.email }}</a>{% else %}-{% endif %}</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn ghost" href="tel:{{ dial }}">Call</a>
+      {% if wa %}<a class="btn ghost" href="{{ wa }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+      {% if m.email %}<a class="btn ghost" href="mailto:{{ m.email }}?subject=Re:%20your%20message%20to%20Embokodweni">Reply by email</a>{% endif %}
+    </div>
+  </section>
+  <aside class="panel">
+    <h3>Status</h3>
+    <form method="post">{% csrf_token %}<button class="btn {% if m.handled %}ghost{% else %}ok{% endif %}" name="action" value="handled">{% if m.handled %}Re-open{% else %}Mark as handled{% endif %}</button></form>
+    <h3>Staff notes</h3>
+    <form method="post" class="note">
+      {% csrf_token %}
+      <textarea name="staff_note" rows="4" placeholder="e.g. Called back, sent price list">{{ m.staff_note }}</textarea>
+      <button class="btn" name="action" value="note">Save note</button>
+    </form>
+    <form method="post">{% csrf_token %}<button class="link-btn" name="action" value="unread">Mark as unread</button></form>
+  </aside>
+</div>
+{% endblock %}

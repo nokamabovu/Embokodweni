@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: embokodweni-lifestyle
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      # Fill these in on the Render dashboard to get enquiry emails
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: ENQUIRY_NOTIFY_EMAIL
+        sync: false
+      # Uncomment together with the disk below (paid plan) so enquiries and
+      # uploaded photos survive redeploys
+      # - key: SQLITE_PATH
+      #   value: /var/data/db.sqlite3
+      # - key: MEDIA_ROOT
+      #   value: /var/data/media
+    # disk:
+    #   name: data
+    #   mountPath: /var/data
+    #   sizeGB: 1

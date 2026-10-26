@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Work with us | Embokodweni Lifestyle{% endblock %}
+{% block description %}Partner with Embokodweni Lifestyle in Cunningmoore A, Mkhuhlu, Mpumalanga: sponsorships, DJ bookings, events, corporate functions and suppliers.{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="Work with us" intro="Sponsors, DJs, event organisers, businesses and suppliers: let's build something the community will remember." %}
+
+<section class="section work-intro">
+  <div class="wrap">
+    <div class="pitch">
+      <p class="big">Every weekend, Embokodweni brings people together for music, sport, food and celebration. Partner with us and be part of it.</p>
+      <div class="pitch-side">
+        <p class="soft">We are building the leading lifestyle and entertainment destination in our community, and we are looking for people who want to grow with us.</p>
+        <a class="btn" href="#contact-options">Contact us</a>
+      </div>
+    </div>
+
+    <div class="rows">
+      {% for t in tracks %}
+      <article class="row">
+        <span class="row-ico">{% include "includes/icon.html" with name=t.icon %}</span>
+        <div>
+          <h3>{{ t.title }}</h3>
+          <p>{{ t.text }}</p>
+          <a class="row-link" href="{{ t.contact_url }}"{% if t.contact_url|slice:":4" == "http" %} target="_blank" rel="noopener"{% endif %}>Get in touch</a>
+        </div>
+      </article>
+      {% endfor %}
+      <article class="row">
+        <span class="row-ico">{% include "includes/icon.html" with name="cake" %}</span>
+        <div>
+          <h3>Have another idea?</h3>
+          <p>Community projects, school and church events, launches, collaborations. If it brings people together, we want to hear it.</p>
+          <a class="row-link" href="#contact-options">Tell us about it</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact-options">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Let's talk</h2>
+      <p>Reach the Embokodweni team directly. DJs, send a mix or social media link. Brands, tell us which events you'd like to be part of.</p>
+    </div>
+    <dl class="contact-list">
+      {% if wa_url %}<div><dt>WhatsApp</dt><dd><a href="{{ wa_url }}" target="_blank" rel="noopener">Chat with us</a></dd></div>{% endif %}
+      {% if site.phones %}<div><dt>Call</dt><dd>{% for display, dial in site.phones %}<a href="tel:{{ dial }}">{{ display }}</a>{% if not forloop.last %}<span class="or"> or </span>{% endif %}{% endfor %}</dd></div>{% endif %}
+      {% if mail_url %}<div><dt>Email</dt><dd><a href="{{ mail_url }}">{{ site.email }}</a></dd></div>{% endif %}
+      {% if not wa_url and not site.phones and not mail_url %}<div><dt>Contact</dt><dd>Phone, WhatsApp and email coming soon</dd></div>{% endif %}
+      <div><dt>Visit</dt><dd><a href="{{ site.directions_url }}" target="_blank" rel="noopener">{{ site.address }}</a></dd></div>
+    </dl>
+  </div>
+</section>
+{% endblock %}

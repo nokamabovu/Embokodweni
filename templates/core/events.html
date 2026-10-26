@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}What's on | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="What's on" intro="Our weekly line-up and upcoming special events at Embokodweni." %}
+
+{% if has_weekly or upcoming %}
+
+{% if has_weekly %}
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Every week</h2>
+      <p>Our regular line-up. Today is highlighted.</p>
+    </div>
+    <div class="week-strip">
+      {% for d in week %}
+      <div class="wday{% if d.is_today %} today{% endif %}{% if not d.events %} quiet{% endif %}">
+        <div class="wday-head">
+          <span class="wday-name">{{ d.short }}</span>
+          {% if d.is_today %}<span class="wday-tag">Today</span>{% endif %}
+        </div>
+        {% for e in d.events %}
+        <div class="wevent">
+          {% if e.start_time %}<span class="wtime">{{ e.start_time|time:"H:i" }}</span>{% endif %}
+          <h3>{{ e.title }}</h3>
+          {% if e.description %}<p>{{ e.description }}</p>{% endif %}
+          <span class="wcat">{{ e.get_category_display }}{% if e.entry %} · {{ e.entry }}{% endif %}</span>
+        </div>
+        {% empty %}
+        <p class="wnone">No regular event</p>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section{% if has_weekly %} grey{% endif %}">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Upcoming events</h2>
+      <p>Themed nights, big matches and celebrations. Reserve a table early.</p>
+    </div>
+    {% if upcoming %}
+      {% include "includes/upcoming.html" with events=upcoming %}
+    {% else %}
+      <p class="empty-line">No special events announced yet. Check back soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% else %}
+
+<section class="section">
+  <div class="wrap">
+    <div class="soon">
+      <span class="soon-ico">{% include "includes/icon.html" with name="calendar" %}</span>
+      <h2>The line-up is coming soon</h2>
+      <p>We're finalising our weekly line-up and special events. In the meantime, you can book your own celebration or get in touch to perform, sponsor or host an event.</p>
+      <div class="soon-actions">
+        <a class="pill dark" href="{% url 'book' %}">Book an event</a>
+        <a class="pill outline-dark" href="{% url 'work' %}">Work with us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}

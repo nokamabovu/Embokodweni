@@ -1,0 +1,13 @@
+<ul class="dates">
+  {% for event in events %}
+  <li>
+    <div class="date"><b>{{ event.date|date:"j" }}</b><span>{{ event.date|date:"M" }}</span></div>
+    <div class="what">
+      <span class="when">{{ event.date|date:"l" }}{% if event.start_time %}, from {{ event.start_time|time:"H:i" }}{% endif %}{% if event.entry %} · {{ event.entry }}{% endif %}</span>
+      <h3>{{ event.title }}</h3>
+      {% if event.description %}<p>{{ event.description }}</p>{% endif %}
+    </div>
+    <a class="btn outline" href="{% url 'book' %}?type=vip">Reserve a table</a>
+  </li>
+  {% endfor %}
+</ul>

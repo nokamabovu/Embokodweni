@@ -1,0 +1,14 @@
+<section class="section grey">
+  <div class="wrap">
+    <div class="sec-head"><h2>How booking works</h2></div>
+    <ol class="steps">
+      {% for st in steps %}
+      <li>
+        <span class="num">{{ forloop.counter }}</span>
+        <h3>{{ st.title }}</h3>
+        <p>{{ st.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>

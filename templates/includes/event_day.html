@@ -1,0 +1,12 @@
+<li>
+  <div class="day">{{ event.day_short }}</div>
+  <div class="what">
+    <h3>{{ event.title }}</h3>
+    {% if event.description %}<p>{{ event.description }}</p>{% endif %}
+  </div>
+  <div class="meta">
+    {% if event.start_time %}From {{ event.start_time|time:"H:i" }}{% endif %}
+    {% if event.entry %}<br>{{ event.entry }}{% endif %}
+    <span class="cat">{{ event.get_category_display }}</span>
+  </div>
+</li>

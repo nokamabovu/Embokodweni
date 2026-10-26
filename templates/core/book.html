@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Book an event | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% include "includes/pagetitle.html" with heading="Book an event" intro="Choose a date, check it's free and send your booking. Our team confirms by phone." %}
+
+<section class="section">
+  <div class="wrap book">
+    <div class="side">
+      <h2>How it works</h2>
+      <ol class="steps steps-side">
+        {% for st in steps %}
+        <li><span class="num">{{ forloop.counter }}</span><div><h3>{{ st.title }}</h3><p>{{ st.text }}</p></div></li>
+        {% endfor %}
+      </ol>
+      <p class="soft">Prefer to talk? {% for display, dial in site.phones %}<a class="inline" href="tel:{{ dial }}">{{ display }}</a>{% if not forloop.last %} or {% endif %}{% endfor %}{% if not site.phones %}<a class="inline" href="{% url 'contact' %}">Contact us</a>{% endif %}</p>
+    </div>
+
+    <div>
+      <form class="enquiry booking-form" method="post" novalidate data-availability-url="{% url 'availability' %}">
+        {% csrf_token %}
+        <input type="hidden" name="ask" id="id_ask" value="{% if asking %}1{% else %}0{% endif %}">
+        <h3>Your booking</h3>
+        <p class="ask-banner" id="ask-banner"{% if not asking %} hidden{% endif %}>You're asking about a busy date. Fill in your details and we'll check if another area is free.</p>
+
+        <div class="field{% if form.event_type.errors %} has-error{% endif %}">
+          <label for="{{ form.event_type.id_for_label }}">{{ form.event_type.label }}</label>
+          {{ form.event_type }}
+        </div>
+        <div class="field{% if form.guests.errors %} has-error{% endif %}">
+          <label for="{{ form.guests.id_for_label }}">{{ form.guests.label }}</label>
+          {{ form.guests }}
+          {% for error in form.guests.errors %}<span class="err">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="field full{% if form.event_date.errors %} has-error{% endif %}">
+          <label for="{{ form.event_date.id_for_label }}">{{ form.event_date.label }}</label>
+          {{ form.event_date }}
+          <div class="avail-note" id="avail-note" aria-live="polite">
+            {% if result %}
+              <div class="avail {% if result.available %}yes{% else %}no{% endif %}">
+                <strong>{{ result.message }}</strong>
+                {% if result.alternatives %}
+                <span class="alt-label">Next free dates:</span>
+                <span class="alts">{% for a in result.alternatives %}<button type="button" class="alt" data-date="{{ a.date }}">{{ a.label }}</button>{% endfor %}</span>
+                {% endif %}
+                {% if result.can_ask %}
+                <div class="ask">
+                  <span>Only part of the venue may be booked. Ask us if there's still space:</span>
+                  <span class="ask-actions">
+                    {% if ask.dial %}<a class="ask-btn" href="tel:{{ ask.dial }}">Call {{ ask.phone }}</a>{% endif %}
+                    {% if ask.whatsapp_url %}<a class="ask-btn" href="{{ ask.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp us</a>{% endif %}
+                    <button type="button" class="ask-btn ask-send">Ask about this date</button>
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+            {% elif form.event_date.errors %}
+              {% for error in form.event_date.errors %}<span class="err">{{ error }}</span>{% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="field{% if form.name.errors %} has-error{% endif %}">
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+          {{ form.name }}
+          {% for error in form.name.errors %}<span class="err">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="field{% if form.phone.errors %} has-error{% endif %}">
+          <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+          {{ form.phone }}
+          {% for error in form.phone.errors %}<span class="err">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="field full{% if form.email.errors %} has-error{% endif %}">
+          <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+          {{ form.email }}
+          {% for error in form.email.errors %}<span class="err">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="field full">
+          <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+          {{ form.message }}
+        </div>
+
+        <button class="btn" type="submit" id="book-submit">{% if asking %}Send my question{% else %}Send booking{% endif %}</button>
+        <p class="small">We only use your details for this booking. Nothing is paid online.</p>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

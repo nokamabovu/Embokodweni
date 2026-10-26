@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Booking received | Embokodweni Lifestyle{% endblock %}
+
+{% block content %}
+{% if asked %}
+{% include "includes/pagetitle.html" with heading="Request received" intro="Thank you. We'll check if there's still space on your date." %}
+{% else %}
+{% include "includes/pagetitle.html" with heading="Booking received" intro="Thank you. Your request is in and the date is available." %}
+{% endif %}
+
+<section class="section">
+  <div class="wrap">
+    <div class="done">
+      <span class="done-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <p class="done-ref">Reference <b>{{ booking.reference }}</b></p>
+      <h2>Thanks, {{ booking.name }}!</h2>
+      <p class="soft">{% if asked %}That date is partly booked, so our team will check if another area is free and call you on <b>{{ booking.phone }}</b>.{% else %}Our team will call you on <b>{{ booking.phone }}</b> to confirm your booking and discuss food, drinks and music.{% endif %}{% if booking.email %} We've also emailed a copy to {{ booking.email }}.{% endif %}</p>
+
+      <dl class="biz done-summary">
+        <div><dt>Event</dt><dd>{{ booking.get_event_type_display }}</dd></div>
+        <div><dt>Date</dt><dd>{{ booking.event_date|date:"l j F Y" }}</dd></div>
+        <div><dt>Guests</dt><dd>{{ booking.guests }}</dd></div>
+        <div><dt>Status</dt><dd>{{ booking.get_status_display }}</dd></div>
+      </dl>
+
+      <div class="soon-actions">
+        <a class="pill dark" href="{% url 'home' %}">Back to home</a>
+        <a class="pill outline-dark" href="{% url 'events' %}">See what's on</a>
+      </div>
+      <p class="small soft">Keep your reference number. If anything changes, call {% for display, dial in site.phones %}<a class="inline" href="tel:{{ dial }}">{{ display }}</a>{% if not forloop.last %} or {% endif %}{% endfor %}.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

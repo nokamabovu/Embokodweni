@@ -1,0 +1,12 @@
+<section class="bookband{% if cta_bg %} has-photo{% endif %}"{% if cta_bg %} style="background-image:url('{{ cta_bg }}')"{% endif %}>
+  <div class="wrap">
+    <div>
+      <h2>Host your next celebration at Embokodweni</h2>
+      <p>Birthdays, VIP tables, year-end functions and groups for the big match. Send us the details and our team will get back to you.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn" href="{% url 'book' %}">Make an enquiry</a>
+      <a class="cta-alt" href="{% url 'work' %}">Or partner with us</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+{% if testimonials %}
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><h2>What people say</h2></div>
+    <div class="quotes">
+      {% for t in testimonials %}
+      <blockquote>
+        <p>&ldquo;{{ t.quote }}&rdquo;</p>
+        <footer><b>{{ t.name }}</b>{% if t.role %}<span>{{ t.role }}</span>{% endif %}</footer>
+      </blockquote>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
