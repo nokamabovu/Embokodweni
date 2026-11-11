@@ -210,7 +210,7 @@ h3 { font-size: 21px; line-height: 1.25; letter-spacing: -0.005em; }
 /* gallery: contact sheet */
 .sheet { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
 .sheet a, .sheet div { display: block; position: relative; overflow: hidden; background: var(--grey); }
-.sheet img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; transition: transform 0.35s ease; }
+.sheet img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 30%; transition: transform 0.35s ease; }
 .sheet a:hover img { transform: scale(1.05); }
 .sheet .wide { grid-column: span 2; grid-row: span 2; }
 .sheet .wide img { height: 100%; }

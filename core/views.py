@@ -90,6 +90,28 @@ VALUES = ["Community", "Respect", "Excellence", "Entertainment", "Innovation", "
 # Built-in event photos (static/img/gallery). They always show, even on a fresh
 # database. Photos uploaded in the admin are shown in front of these.
 BUILT_IN_PHOTOS = [
+    # Event photos (November 2026)
+    ("embokodweni-10.jpg", "Friends out for the night at Embokodweni"),
+    ("embokodweni-11.jpg", "Live performance on the Embokodweni stage"),
+    ("embokodweni-12.jpg", "Performing for the crowd"),
+    ("embokodweni-13.jpg", "Guests at the Welcome to Embokodweni photo frame"),
+    ("embokodweni-14.jpg", "Live act on stage"),
+    ("embokodweni-15.jpg", "Friends at the Welcome to Embokodweni photo frame"),
+    ("embokodweni-16.jpg", "The crowd at the front of the stage"),
+    ("embokodweni-17.jpg", "Family day with jumping castles on the field"),
+    ("embokodweni-18.jpg", "Dressed up for the night"),
+    ("embokodweni-19.jpg", "Hands up for the performer"),
+    ("embokodweni-20.jpg", "Photo frame moments"),
+    ("embokodweni-21.jpg", "Artist with the crowd"),
+    ("embokodweni-22.jpg", "Feeling the music"),
+    ("embokodweni-23.jpg", "A full venue"),
+    ("embokodweni-24.jpg", "Cheers at the photo frame"),
+    ("embokodweni-25.jpg", "A busy night under the lights"),
+    ("embokodweni-26.jpg", "The crowd at the rail"),
+    ("embokodweni-27.jpg", "Performer on stage"),
+    ("embokodweni-28.jpg", "DJ booth energy"),
+    ("embokodweni-29.jpg", "Welcome to Embokodweni"),
+    # Earlier photos
     ("embokodweni-01.jpg", "Golden hour with the Embokodweni crowd"),
     ("embokodweni-02.jpg", "Hands up at sunset"),
     ("embokodweni-03.jpg", "Good people, good vibes"),
